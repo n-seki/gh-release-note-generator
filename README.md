@@ -2,7 +2,7 @@
 
 This is a CLI tool generating GitHub release note from GitHub Projetcs.
 
-# Usesage
+# Usage
 
 ```
 Usage:
