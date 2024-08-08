@@ -19,6 +19,12 @@ Flags:
   -v, --version               version for ./gh-release-note-generator
 ```
 
+The permission the GitHub Access Token should hava to access `read:projects`.
+
+```
+export GITHUB_ACCESS_TOKEN="YOUR_GITHUB_ACCESS_TOKEN"
+```
+
 # Output format
 
 ```
