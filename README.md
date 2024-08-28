@@ -29,14 +29,11 @@ export GITHUB_ACCESS_TOKEN="YOUR_GITHUB_ACCESS_TOKEN"
 
 ```
 ## {Label Name}
-* {Issue Title} by author1, author2
-  * #1, #2, #3
+* {Issue Title} by author1, author2 in #1, #2, #3
 
 ## {Label Name}
-* {Issue Title} by author
-  * #4
-* {Issue Title} by author
-  * #5, #6
+* {Issue Title} by author in #4
+* {Issue Title} by author in #5, #6
 ```
 
 - `#Number` is a link of Pull Request associated with the issue.
