@@ -29,13 +29,13 @@ export GITHUB_ACCESS_TOKEN="YOUR_GITHUB_ACCESS_TOKEN"
 
 ```
 ## {Label Name}
-* {Issue Title}
+* {Issue Title} by author1, author2
   * #1, #2, #3
 
 ## {Label Name}
-* {Issue Title}
+* {Issue Title} by author
   * #4
-* {Issue Title}
+* {Issue Title} by author
   * #5, #6
 ```
 
