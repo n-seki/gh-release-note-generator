@@ -28,11 +28,16 @@ type Repository struct {
 	Name string
 }
 
+type Actor struct {
+	Login string
+}
+
 type IssueTimelineItems struct {
 	CrossReferencedEvent struct {
 		ReferencedSubject struct {
 			PullRequest struct {
 				Title      string
+				Author     Actor
 				Number     int
 				Merged     bool
 				Repository Repository
@@ -71,6 +76,7 @@ type ProjectPullRequestsQuery struct {
 type ReleaseNoteItem struct {
 	issueTitle   string
 	prShortLinks []string
+	authors      []string
 }
 
 var cmd = &cobra.Command{
@@ -171,6 +177,7 @@ func generateGitHubReleaseNote(
 			continue
 		}
 		prLinks := []string{}
+		authors := []string{}
 		for _, node := range node.Content.Issue.TimelineItems.Nodes {
 			pr := node.CrossReferencedEvent.ReferencedSubject.PullRequest
 			repo := pr.Repository
@@ -178,6 +185,11 @@ func generateGitHubReleaseNote(
 				number := pr.Number
 				shortLink := "#" + strconv.Itoa(number)
 				prLinks = append(prLinks, shortLink)
+
+				author := "@" + pr.Author.Login
+				if !slices.Contains(authors, author) {
+					authors = append(authors, author)
+				}
 			}
 		}
 		if len(prLinks) == 0 {
@@ -186,6 +198,7 @@ func generateGitHubReleaseNote(
 		item := ReleaseNoteItem{
 			issueTitle:   node.Content.Issue.Title,
 			prShortLinks: prLinks,
+			authors:      authors,
 		}
 		if _, ok := releaseNoteItems[label]; !ok {
 			releaseNoteItems[label] = []ReleaseNoteItem{}
@@ -202,7 +215,8 @@ func generateGitHubReleaseNote(
 		}
 		releaseNote += "## " + label + "\n"
 		for _, item := range items {
-			releaseNote += fmt.Sprintf("* %s\n", item.issueTitle)
+			authors := strings.Join(item.authors, ", ")
+			releaseNote += fmt.Sprintf("* %s by %s\n", item.issueTitle, authors)
 			links := strings.Join(item.prShortLinks, ", ")
 			releaseNote += fmt.Sprintf("   * %s\n", links)
 		}

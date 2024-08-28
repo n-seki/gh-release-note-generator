@@ -1,10 +1,13 @@
 module github.com/n-seki/gh-release-note-generator
 
-go 1.22.2
+go 1.23
 
 require github.com/spf13/cobra v1.8.1
 
-require github.com/shurcooL/graphql v0.0.0-20230722043721-ed46e5a46466 // indirect
+require (
+	github.com/google/go-cmp v0.6.0 // indirect
+	github.com/shurcooL/graphql v0.0.0-20230722043721-ed46e5a46466 // indirect
+)
 
 require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
