@@ -216,9 +216,8 @@ func generateGitHubReleaseNote(
 		releaseNote += "## " + label + "\n"
 		for _, item := range items {
 			authors := strings.Join(item.authors, ", ")
-			releaseNote += fmt.Sprintf("* %s by %s\n", item.issueTitle, authors)
 			links := strings.Join(item.prShortLinks, ", ")
-			releaseNote += fmt.Sprintf("   * %s\n", links)
+			releaseNote += fmt.Sprintf("* %s by %s in %s\n", item.issueTitle, authors, links)
 		}
 		releaseNote += "\n"
 	}
