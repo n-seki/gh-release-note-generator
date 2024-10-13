@@ -80,7 +80,7 @@ type ReleaseNoteItem struct {
 }
 
 var cmd = &cobra.Command{
-	Use:     "./gh-release-note-generator",
+	Use:     "./gh-release-note-generator -o 'organization' -r 'repository' -p 'project' -l 'label name'",
 	Version: "0.0.1",
 	Run: func(cmd *cobra.Command, args []string) {
 		token, err := cmd.Flags().GetString("token")
@@ -113,7 +113,11 @@ var cmd = &cobra.Command{
 		if err != nil {
 			log.Fatal(err)
 		}
-		generateGitHubReleaseNote(token, project, orginization, repository, labels, maxItemCount)
+		excludeLabels, err := cmd.Flags().GetStringArray("exclude-labels")
+		if err != nil {
+			log.Fatal(err)
+		}
+		generateGitHubReleaseNote(token, project, orginization, repository, labels, excludeLabels, maxItemCount)
 	},
 }
 
@@ -129,6 +133,7 @@ func init() {
 	cmd.PersistentFlags().StringArrayP("labels", "l", []string{}, "Target issue labels")
 	cmd.MarkPersistentFlagRequired("labels")
 	cmd.PersistentFlags().IntP("max-item-count", "i", 100, "Max item count in target Project")
+	cmd.PersistentFlags().StringArray("exclude-labels", []string{}, "Exclude issue labels")
 }
 
 func main() {
@@ -141,6 +146,7 @@ func generateGitHubReleaseNote(
 	organization string,
 	repository string,
 	labels []string,
+	excludeLabels []string,
 	maxItemCount int,
 ) {
 	src := oauth2.StaticTokenSource(
@@ -167,13 +173,18 @@ func generateGitHubReleaseNote(
 
 	for _, node := range query.Organization.ProjectV2.Items.Nodes {
 		label := ""
+		skip := false
 		for _, l := range node.Content.Issue.Labels.Nodes {
+			if slices.Contains(excludeLabels, l.Name) {
+				skip = true
+				break
+			}
 			if slices.Contains(labels, l.Name) {
 				label = l.Name
 				break
 			}
 		}
-		if len(label) == 0 {
+		if skip || len(label) == 0 {
 			continue
 		}
 		prLinks := []string{}
