@@ -6,17 +6,18 @@ This is a CLI tool generating GitHub release note from GitHub Projetcs.
 
 ```
 Usage:
-  ./gh-release-note-generator [flags]
+  ./gh-release-note-generator -o 'organization' -r 'repository' -p 'project' -l 'label name' [flags]
 
 Flags:
-  -h, --help                  help for ./gh-release-note-generator
-  -l, --labels stringArray    Target issue labels
-  -i, --max-item-count int    Max item count in target Project (default 100)
-  -o, --organization string   Organization
-  -p, --project int           Target GitHub Project ID (default 1)
-  -r, --repository string     Target repository
-  -t, --token string          GitHub access token
-  -v, --version               version for ./gh-release-note-generator
+      --exclude-labels stringArray   Exclude issue labels
+  -h, --help                         help for ./gh-release-note-generator
+  -l, --labels stringArray           Target issue labels
+  -i, --max-item-count int           Max item count in target Project (default 100)
+  -o, --organization string          Organization
+  -p, --project int                  Target GitHub Project ID (default 1)
+  -r, --repository string            Target repository
+  -t, --token string                 GitHub access token
+  -v, --version                      version for ./gh-release-note-generator
 ```
 
 The permission the GitHub Access Token should hava to access `repo` and `read:projects`.
